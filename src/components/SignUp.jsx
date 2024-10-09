@@ -10,35 +10,35 @@ import {
   TextField,
   Avatar,
 } from "@mui/material";
-import LockOutlined from "@mui/icons-material/LockOutlined";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined"; 
 import { useForm } from "react-hook-form";
 import { green } from '@mui/material/colors';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useNavigate } from 'react-router-dom'; 
 
 export default function SignUp({setFormData}) {
-  const history=useHistory();
+  const navigate = useNavigate(); 
   const { register, formState: { errors, isValid }, handleSubmit } = useForm({ mode: "onChange" });
 
   const onSubmit = (data) => {
     axios.post('https://reqres.in/api/users', data)
-    .then(function (response) {
-      console.log(response.data);
-      setFormData(response.data)
-      history.push("/signin")
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+      .then(function (response) {
+        console.log(response.data);
+        setFormData(response.data);
+        navigate("/signin");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
     <Container component="main" maxWidth="xs" className="register-container form-container">
       <CssBaseline />
       <div className='signUp-icon'>
-      <Avatar sx={{ width: 56, height: 56}}>
-        <LockOutlined />
-      </Avatar>
+        <Avatar sx={{ width: 56, height: 56 }}>
+          <LockOutlinedIcon /> 
+        </Avatar>
       </div>
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -71,10 +71,13 @@ export default function SignUp({setFormData}) {
                 id="lastName"
                 label="Last Name"
                 autoComplete="lname"
-                {...register("lastName", { required: "Soyad alanı zorunludur.",minLength: {
-                  value: 3,
-                  message: "Soyad en az 3 karakter olmalıdır."
-                } })}
+                {...register("lastName", {
+                  required: "Soyad alanı zorunludur.",
+                  minLength: {
+                    value: 3,
+                    message: "Soyad en az 3 karakter olmalıdır."
+                  }
+                })}
                 error={!!errors.lastName}
                 helperText={errors.lastName ? errors.lastName.message : ""}
               />
@@ -87,13 +90,13 @@ export default function SignUp({setFormData}) {
                 id="email"
                 label="Email Address"
                 autoComplete="email"
-                {...register("email", { required: "Email alanı zorunludur.",
+                {...register("email", {
+                  required: "Email alanı zorunludur.",
                   pattern: {
                     value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                     message: "Geçerli bir email adresi giriniz."
                   }
-
-                 })}
+                })}
                 error={!!errors.email}
                 helperText={errors.email ? errors.email.message : ""}
               />
@@ -112,7 +115,8 @@ export default function SignUp({setFormData}) {
                   minLength: {
                     value: 6,
                     message: "Şifre en az 6 karakter olmalıdır."
-                  }, pattern: {
+                  },
+                  pattern: {
                     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
                     message: "Şifre en az 1 büyük harf, 1 küçük harf, 1 rakam ve 1 özel karakter içermelidir."
                   }
